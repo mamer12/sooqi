@@ -39,13 +39,34 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
-            ])
+            Tables\Columns\TextColumn::make('id')
+                ->label('ID')
+                ->sortable(),
+            Tables\Columns\TextColumn::make('name')
+                ->label('Category Name')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('slug')
+                ->label('Slug')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('created_at')
+                ->label('Created At')
+                ->dateTime('M d, Y h:i A')
+                ->sortable(),
+            Tables\Columns\TextColumn::make('updated_at')
+                ->label('Updated At')
+                ->dateTime('M d, Y h:i A')
+                ->sortable(),
+        ])
+
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+            Tables\Actions\ViewAction::make(), // Show button
+            Tables\Actions\EditAction::make(), // Edit button
+            Tables\Actions\DeleteAction::make(), // Delete button
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
