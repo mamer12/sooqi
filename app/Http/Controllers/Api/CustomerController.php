@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\User; // Assuming customers are stored in the default 'users' table
 use Illuminate\Http\Request;

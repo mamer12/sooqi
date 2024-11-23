@@ -1,57 +1,56 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\OrderItem;
+
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class OrderItemController extends Controller
+class CategoryController extends Controller
 {
-    // Display all order items
+    // Display a list of categories
     public function index()
     {
-        $orderItems = OrderItem::with('product', 'order')->get();
-        return response()->json($orderItems);
+        $categories = Category::all();
+        return response()->json($categories);
     }
 
-    // Show a single order item
-    public function show(OrderItem $orderItem)
+    // Show a single category
+    public function show(Category $category)
     {
-        return response()->json($orderItem->load('product', 'order'));
+        return response()->json($category);
     }
 
-    // Store a new order item
+    // Store a new category
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'order_id' => 'required|exists:orders,id',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
-        $orderItem = OrderItem::create($validated);
+        $category = Category::create($validated);
 
-        return response()->json($orderItem, 201);
+        return response()->json($category, 201);
     }
 
-    // Update an existing order item
-    public function update(Request $request, OrderItem $orderItem)
+    // Update an existing category
+    public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'quantity' => 'sometimes|required|integer|min:1',
-            'price' => 'sometimes|required|numeric|min:0',
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
-        $orderItem->update($validated);
+        $category->update($validated);
 
-        return response()->json($orderItem);
+        return response()->json($category);
     }
 
-    // Delete an order item
-    public function destroy(OrderItem $orderItem)
+    // Delete a category
+    public function destroy(Category $category)
     {
-        $orderItem->delete();
+        $category->delete();
         return response()->json(null, 204);
     }
 }

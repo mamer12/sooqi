@@ -14,7 +14,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationIcon = 'heroicon-o-user'; // User icon from Heroicons
 
     public static function form(Form $form): Form
     {
@@ -52,66 +52,73 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('id')
-                ->label('ID')
-                ->sortable(),
-            Tables\Columns\TextColumn::make('name')
-                ->label('Name')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('email')
-                ->label('Email')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('role')
-                ->label('Role')
-                ->formatStateUsing(fn($state) => ucfirst($state)) // Capitalizes the first letter
-                ->colors([
-                    'success' => 'admin',
-                    'primary' => 'user',
-                ]),
-            Tables\Columns\TextColumn::make('status')
-                ->label('Status')
-                ->formatStateUsing(fn($state) => ucfirst($state)) // Capitalizes the first letter
-                ->colors([
-                    'success' => 'active',
-                    'danger' => 'inactive',
-                ]),
-            Tables\Columns\TextColumn::make('created_at')
-            ->label('Created At')
-            ->dateTime('M d, Y h:i A')
-            ->sortable(),
-        ])
-        ->filters([
-            Tables\Filters\SelectFilter::make('role')
-                ->label('Role')
-                ->options([
-                    'admin' => 'Admin',
-                    'user' => 'User',
-                ]),
-            Tables\Filters\SelectFilter::make('status')
-                ->label('Status')
-                ->options([
-                    'active' => 'Active',
-                    'inactive' => 'Inactive',
-                ]),
-        ])
-        ->actions([
-            Tables\Actions\ViewAction::make(),
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),Tables\Actions\Action::make('toggleStatus')
+            ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Role')
+                    ->formatStateUsing(fn($state) => ucfirst($state)) // Capitalizes the first letter
+                    ->colors([
+                        'success' => 'admin',
+                        'primary' => 'user',
+                    ]),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(fn($state) => ucfirst($state)) // Capitalizes the first letter
+                    ->colors([
+                        'success' => 'active',
+                        'danger' => 'inactive',
+                    ]),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime('M d, Y h:i A')
+                    ->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('role')
+                    ->label('Role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'user' => 'User',
+                    ]),
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'active' => 'Active',
+                        'inactive' => 'Inactive',
+                    ]),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->icon('heroicon-o-eye') // View icon
+                    ->label('View'),
+                Tables\Actions\EditAction::make()
+                    ->icon('heroicon-o-pencil') // Edit icon
+                    ->label('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->icon('heroicon-o-trash') // Trash icon
+                    ->label('Delete'),
+                Tables\Actions\Action::make('toggleStatus')
                 ->label('Toggle Status')
+                ->icon('heroicon-o-arrow-path') // Updated to a valid icon
                 ->action(function ($record) {
                     $record->status = $record->status === 'active' ? 'inactive' : 'active';
                     $record->save();
-                })
+                }),
 
-
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
-        ]);
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
     }
 
     public static function getRelations(): array
